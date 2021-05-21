@@ -1,0 +1,14 @@
+[package]
+name = "qh210521"
+version = "0.1.0"
+authors = ["vadim"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rocket = {path = "../Rocket/core/lib"}
+rocket_contrib = {path = "../Rocket/contrib/lib"}
+serde = "1.0"
+serde_json = "1.0"
+serde_derive = "1.0"
