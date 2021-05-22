@@ -23,7 +23,8 @@ async function displayArticle(article) {
     title.innerHTML = article.title
     author.innerHTML = article.author
     content.innerHTML = article.content
-    imageTitle.innerHTML = article.imageTitle
+    image.src = '/public/' + article.image
+    imageTitle.innerHTML = article.image_title
 }
 
 
