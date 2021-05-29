@@ -49,8 +49,8 @@ fn new(id: u32, article: Json<Article>, map: State<Mutex<Vec<Article>>>) -> Json
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![hello, new, get])
-        .mount("/public", StaticFiles::from("static"))
+        //.mount("/", routes![hello, new, get])
+        .mount("/", StaticFiles::from("static"))
         .manage(Mutex::new(Vec::<Article>::new()))
         .launch();
 }
