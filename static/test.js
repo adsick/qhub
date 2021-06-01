@@ -21,7 +21,7 @@ async function getArticleById(id) {
 
 async function queryArticle(hub, id){
     let response = await fetch('/query?h='+hub+'&id='+id)
-    let article = await response.json()
+    let article = await response.json() //here it may fail because of trying to parse a 404 page
     return article
 }
 
@@ -40,7 +40,7 @@ async function displayArticle(article) {
 //мы получаем статью с диска и постим её же на сервер
 async function postFirstArticle(url) {
     let article = await getArticle()
-    console.log(article)
+    //console.log(article)
     //console.log(JSON.stringify(article))
 
     fetch(url, {
@@ -83,8 +83,10 @@ async function test() {
     console.log(await usr.json())
 
     console.log('testing posting in hub...');
-    await postFirstArticle('/Anime')
-    await queryArticle('Anime', 0)
+    await postFirstArticle('/Rust')
+    //await queryArticle('Anime', 0)
+    console.log('testing query article...')
+    console.log(await queryArticle('Rust', 0))
     //await postFirstArticle('/') //classic aka global
     //await displayArticle(await getArticleById(0))
 }

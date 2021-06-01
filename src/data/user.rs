@@ -1,7 +1,7 @@
 use super::Vote;
+use std::collections::HashMap;
 use std::hash::Hash;
 use std::sync::RwLock;
-use std::collections::HashMap;
 pub struct Users {
     users: RwLock<HashMap<String, User>>,
 }
@@ -16,7 +16,7 @@ impl Users {
     pub fn add(&self, username: String, userdata: User) -> Result<(), String> {
         {
             let users = self.users.read().unwrap();
-            
+
             if users.contains_key(&username) {
                 return Err("this user already exists".to_string());
             }
@@ -47,11 +47,9 @@ pub struct User {
 
     //registered datetime
     //last activity datetime
-
     pub bio: String,
     //contacts
     //honors
-
     positive: u32, //reputation
     negative: u32, //user settings
 

@@ -31,7 +31,6 @@ fn get_article(id: usize, articles: State<Articles>) -> Option<Json<Article>> {
 
 #[post("/", format = "application/json", data = "<article>")]
 fn post_article(article: Json<Article>, articles: State<Articles>) -> JsonValue {
-    
     match articles.add(article.to_owned()) {
         None => {
             json!({"status": "error", "reason": "unknown"})
@@ -43,8 +42,8 @@ fn post_article(article: Json<Article>, articles: State<Articles>) -> JsonValue 
 }
 
 #[get("/<username>")]
-fn get_user(username: String, users: State<Users>)->JsonValue{
-    if let Some(bio) = users.get(username).map(|u|u.bio){
+fn get_user(username: String, users: State<Users>) -> JsonValue {
+    if let Some(bio) = users.get(username).map(|u| u.bio) {
         json!({"status": "succes", "bio": bio})
     } else {
         json!({"status": "error", "reason": "user does not exists"})
@@ -52,25 +51,23 @@ fn get_user(username: String, users: State<Users>)->JsonValue{
 }
 
 #[get("/query?<h>", rank = 2)]
-fn query_hub(h: String, hubs: State<Hubs>)->JsonValue{
+fn query_hub(h: String, hubs: State<Hubs>) -> JsonValue {
     //hubs.get(h)
     todo!()
 }
 
 #[get("/query?<h>&<id>", rank = 1)]
-fn query_post(h: String, id: usize, hubs: State<Hubs>)->Option<Json<Article>>{
-    let arcticle =
-    hubs.query_article(&h, id);
+fn query_post(h: String, id: usize, hubs: State<Hubs>) -> Option<Json<Article>> {
+    let arcticle = hubs.query_article(&h, id);
 
-    match arcticle{
+    match arcticle {
         Some(a) => Some(Json(a)),
-        None => None
+        None => None,
     }
 }
 
 #[post("/<h>", format = "application/json", data = "<article>")]
 fn post_article_in_hub(article: Json<Article>, h: String, hubs: State<Hubs>) -> JsonValue {
-    
     match hubs.post_article(&h, article.0) {
         Err(e) => {
             json!({"status": "error: ".to_string() + &e, "reason": "unknown"})
@@ -83,7 +80,7 @@ fn post_article_in_hub(article: Json<Article>, h: String, hubs: State<Hubs>) -> 
 
 fn main() {
     rocket::ignite()
-        .mount("/post", routes![post_article, get_article])//сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
+        .mount("/post", routes![post_article, get_article]) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
         .mount("/user", routes![get_user])
         .mount("/", routes![query_hub, query_post, post_article_in_hub])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
