@@ -23,7 +23,7 @@ impl Articles {
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Article {
     title: String,
-    author: usize,
+    author: String,
 
     content: String,
     //datetime (todo?)

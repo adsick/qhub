@@ -14,9 +14,6 @@ use rocket::{get, routes};
 use rocket_contrib::json::{Json, JsonValue};
 use rocket_contrib::serve::StaticFiles;
 
-//type articles = RwLock<Vec<Article>>;
-//type users = RwLock<Vec<User>>;
-
 mod data;
 use data::*;
 
@@ -28,32 +25,70 @@ fn hello() -> Html<String> {
 }
 
 #[get("/<id>", format = "json")]
-fn get(id: usize, articles: State<Articles>) -> Option<Json<Article>> {
-    //let articles = map.read().unwrap();
-
+fn get_article(id: usize, articles: State<Articles>) -> Option<Json<Article>> {
     articles.get(id).map(|article| Json(article.clone()))
 }
 
 #[post("/", format = "application/json", data = "<article>")]
-fn post(article: Json<Article>, articles: State<Articles>) -> JsonValue {
-    let result = match articles.add(article.to_owned()) {
+fn post_article(article: Json<Article>, articles: State<Articles>) -> JsonValue {
+    
+    match articles.add(article.to_owned()) {
         None => {
             json!({"status": "error", "reason": "unknown"})
         }
         Some(id) => {
             json!({"status": "success", "id":  id})
         }
-    };
+    }
+}
 
-    //dbg!(result.to_string());
-    result
+#[get("/<username>")]
+fn get_user(username: String, users: State<Users>)->JsonValue{
+    if let Some(bio) = users.get(username).map(|u|u.bio){
+        json!({"status": "succes", "bio": bio})
+    } else {
+        json!({"status": "error", "reason": "user does not exists"})
+    }
+}
+
+#[get("/query?<h>", rank = 2)]
+fn query_hub(h: String, hubs: State<Hubs>)->JsonValue{
+    //hubs.get(h)
+    todo!()
+}
+
+#[get("/query?<h>&<id>", rank = 1)]
+fn query_post(h: String, id: usize, hubs: State<Hubs>)->Option<Json<Article>>{
+    let arcticle =
+    hubs.query_article(&h, id);
+
+    match arcticle{
+        Some(a) => Some(Json(a)),
+        None => None
+    }
+}
+
+#[post("/<h>", format = "application/json", data = "<article>")]
+fn post_article_in_hub(article: Json<Article>, h: String, hubs: State<Hubs>) -> JsonValue {
+    
+    match hubs.post_article(&h, article.0) {
+        Err(e) => {
+            json!({"status": "error: ".to_string() + &e, "reason": "unknown"})
+        }
+        Ok(id) => {
+            json!({"status": "successfuly posted to ".to_string() + &h, "id":  id})
+        }
+    }
 }
 
 fn main() {
     rocket::ignite()
-        .mount("/post", routes![post, get])
-        .mount("/", StaticFiles::from("static"))
+        .mount("/post", routes![post_article, get_article])//сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
+        .mount("/user", routes![get_user])
+        .mount("/", routes![query_hub, query_post, post_article_in_hub])
+        .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
         .manage(Articles::new())
         .manage(Users::new())
+        .manage(Hubs::test())
         .launch();
 }

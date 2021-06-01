@@ -19,6 +19,11 @@ async function getArticleById(id) {
     return article
 }
 
+async function queryArticle(hub, id){
+    let response = await fetch('/query?h='+hub+'&id='+id)
+    let article = await response.json()
+    return article
+}
 
 //получаем статью и делаем изменения на гетемеле страничке
 async function displayArticle(article) {
@@ -33,12 +38,12 @@ async function displayArticle(article) {
 
 //это вот чисто для дебага тут лежит
 //мы получаем статью с диска и постим её же на сервер
-async function postFirstArticle() {
+async function postFirstArticle(url) {
     let article = await getArticle()
     console.log(article)
     //console.log(JSON.stringify(article))
 
-    fetch('/post', {
+    fetch(url, {
         method: 'Post',
         headers: {
             "Content-type": "application/json"
@@ -54,6 +59,7 @@ async function postFirstArticle() {
 
 
 //загружаем стать на сервер    
+//todo
 async function postArticle(article) {
 
     fetch('/', {
@@ -71,8 +77,16 @@ async function postArticle(article) {
 //а тут мы сначала вызываем постинг статьи-примера, а после этого обновляем хтмл, причём мы снова запрашиваем статью с сервера
 //но на этот раз мы получаем эту статью через getArticleById()
 async function test() {
-    await postFirstArticle()
-    await displayArticle(await getArticleById(0))
+    
+    console.log('testing user...')
+    let usr = await fetch('/user/adsick')
+    console.log(await usr.json())
+
+    console.log('testing posting in hub...');
+    await postFirstArticle('/Anime')
+    await queryArticle('Anime', 0)
+    //await postFirstArticle('/') //classic aka global
+    //await displayArticle(await getArticleById(0))
 }
 
 test()
