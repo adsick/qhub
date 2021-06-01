@@ -1,3 +1,5 @@
+//этот файл сейчас никуда не подключён и служит примером
+
 const title = document.getElementById("title")
 const author = document.getElementById("author")
 const content = document.getElementById("content")
@@ -6,7 +8,7 @@ const imageTitle = document.getElementById("imageTitle")
 
 //получаем статью с диска для примера
 async function getArticle() {
-    let response = await fetch('/public/article.json')
+    let response = await fetch('/article.json')
     let article = await response.json()
     return article
 }
@@ -20,7 +22,7 @@ async function getArticleById(id) {
 
 //получаем статью и делаем изменения на гетемеле страничке
 async function displayArticle(article) {
-    title.innerHTML = article.title
+    title.innerHTML = article.title //error title is null, хз почему но шото не так. Вадим 30.05.21
     author.innerHTML = article.author
     content.innerHTML = article.content
     image.src = '/public/' + article.image
