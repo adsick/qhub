@@ -14,7 +14,7 @@ async function getArticle() {
 }
 //алё ну шо там со статьёй
 async function getArticleById(id) {
-    let response = await fetch('/' + id)
+    let response = await fetch('/post/' + id)
     let article = await response.json()
     return article
 }
@@ -22,23 +22,23 @@ async function getArticleById(id) {
 
 //получаем статью и делаем изменения на гетемеле страничке
 async function displayArticle(article) {
-    title.innerHTML = article.title //error title is null, хз почему но шото не так. Вадим 30.05.21
+    title.innerHTML = article.title //error title is null, хз почему но шото не так. Вадим 30.05.21 //UPD это короче на странице оно не могло найти title в html, потому и null, с самим джисоном всё норм
     author.innerHTML = article.author
     content.innerHTML = article.content
-    image.src = '/public/' + article.image
+    image.src = '/' + article.image
     imageTitle.innerHTML = article.image_title
 }
 
 
 
 //это вот чисто для дебага тут лежит
-//мы получаем статью с диска и постим её же на слеш ноль
+//мы получаем статью с диска и постим её же на сервер
 async function postFirstArticle() {
     let article = await getArticle()
     console.log(article)
     //console.log(JSON.stringify(article))
 
-    fetch('/0', {
+    fetch('/post', {
         method: 'Post',
         headers: {
             "Content-type": "application/json"
@@ -56,7 +56,7 @@ async function postFirstArticle() {
 //загружаем стать на сервер    
 async function postArticle(article) {
 
-    fetch('/1', {
+    fetch('/', {
         method: 'Post',
         headers: {
             "Content-type": "application/json"

@@ -1,4 +1,4 @@
-pub struct Comments{
+pub struct Comments {
     //todo
 }
 
@@ -6,6 +6,4 @@ pub struct Comments{
 pub struct Comment {
     author: usize,
     content: String,
-
-    
 }
