@@ -10,15 +10,9 @@ impl Comments {
             comments: RwLock::new(vec![]),
         }
     }
-
-    pub fn add(&self, author: String, content: String) -> Result<usize, String> {
+    //looks like non best api for this, we need a smooth transition from postable comment to this.
+    pub fn add(&self, comment: Comment) -> Result<usize, String> {
         if let Ok(mut comments) = self.comments.write() {
-            let comment = Comment {
-                author,
-                content,
-                morevotes: 0,
-                lessvotes: 0,
-            };
             let id = comments.len();
             comments.push(comment);
             Ok(id)
@@ -45,8 +39,25 @@ pub struct Comment {
     //tags?
 }
 
+impl Comment {
+    fn new(author: String, content: String) -> Self {
+        Comment {
+            author,
+            content,
+            morevotes: 0,
+            lessvotes: 0,
+        }
+    }
+}
+
 #[derive(Deserialize)]
-pub struct PostableComment{
-    author: String,
-    content: String
+pub struct PostableComment {
+    //author: String,
+    content: String,
+}
+
+impl PostableComment {
+    pub fn authorize(self, author: String) -> Comment {
+        Comment::new(self.content, author)
+    }
 }

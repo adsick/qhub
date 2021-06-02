@@ -1,3 +1,4 @@
+use super::Comment;
 use super::Comments;
 use super::Tag;
 
@@ -21,7 +22,6 @@ impl Articles {
     pub fn get(&self, id: usize) -> Option<Article> {
         self.articles.read().ok()?.get(id).cloned()
     }
-
     pub fn vote(&self, id: usize, vote: i8) -> Result<(), String> {
         if let Ok(mut articles) = self.articles.write() {
             if let Some(article) = articles.get_mut(id) {
@@ -35,17 +35,10 @@ impl Articles {
         }
         Ok(())
     }
-    //refactor to postable comments or smth. todo
-    pub fn comment(
-        &self,
-        id: usize,
-        author: String,
-        content: String,
-        comments: &mut Comments,
-    ) -> Result<(), String> {
+    pub fn comment(&self, id: usize, comment: Comment, comments: &Comments) -> Result<(), String> {
         if let Ok(mut articles) = self.articles.write() {
             if let Some(article) = articles.get_mut(id) {
-                return match comments.add(author, content) {
+                return match comments.add(comment) {
                     Ok(id) => {
                         article.comments.push(id);
                         Ok(())

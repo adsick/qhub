@@ -1,3 +1,5 @@
+use rocket::http::Cookies;
+
 use super::utils::*;
 
 #[get("/<id>", format = "json")]
@@ -16,7 +18,7 @@ pub fn post_article(article: Json<Article>, articles: State<Articles>) -> JsonVa
         }
     }
 }
-
+//todo authorization via cookies
 #[post("/vote/<id>", format = "json", data = "<vote>")]
 pub fn vote(id: usize, vote: Json<i8>, articles: State<Articles>) -> JsonValue {
     match articles.vote(id, vote.0) {
@@ -26,8 +28,23 @@ pub fn vote(id: usize, vote: Json<i8>, articles: State<Articles>) -> JsonValue {
 }
 
 #[post("/comment/<id>", format = "json", data = "<comment>")]
-pub fn comment(id: usize, comment: Json<Comment>, articles: State<Articles>) -> JsonValue {
-    //distinction between postable comments required, todo
-    todo!();
-    json!({})
+pub fn comment(
+    id: usize,
+    cookies: Cookies,
+    comment: Json<PostableComment>,
+    articles: State<Articles>,
+    comments: State<Comments>,
+) -> JsonValue {
+    //rework to real session thing
+    let username = match cookies.get("username") {
+        Some(user) => user.to_string(),
+        None => return json!({"status": "error", "reason": "session invalid"}),
+    };
+
+    let comment = comment.into_inner().authorize(username);
+
+    match articles.comment(id, comment, &comments) {
+        Ok(()) => json!({"status": "successful"}),
+        Err(e) => json!({"status": "error", "reason": e}),
+    }
 }
