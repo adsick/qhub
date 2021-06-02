@@ -1,6 +1,5 @@
-use super::Vote;
 use std::collections::HashMap;
-use std::hash::Hash;
+
 use std::sync::RwLock;
 pub struct Users {
     users: RwLock<HashMap<String, User>>,
@@ -53,8 +52,8 @@ pub struct User {
     positive: u32, //reputation
     negative: u32, //user settings
 
-    votes: Vec<Vote>,
-    //subscriptions: ...
+                   //votes: Vec<Vote>,
+                   //subscriptions: ...
 }
 
 impl User {
@@ -64,7 +63,7 @@ impl User {
             password: pass,
             positive: 0,
             negative: 0,
-            votes: vec![],
+            //votes: vec![],
             bio: "".to_string(),
         }
     }

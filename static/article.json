@@ -6,5 +6,7 @@
     "image_title": "Jojo",
     "image_description": "it really sucks",
     "morevotes": 14,
-    "lessvotes": 33
-}
+    "lessvotes": 33,
+    "comments": [12, 3],
+    "tags": [{"tag": "cool", "morevotes": 5, "lessvotes": 1}]
+}   

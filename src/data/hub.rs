@@ -17,6 +17,7 @@ impl Hubs {
         let hubs = Hubs::new();
         hubs.add("Anime".to_string());
         hubs.add("Vpiska".to_string());
+        hubs.add("Rust".to_string());
         hubs
     }
 

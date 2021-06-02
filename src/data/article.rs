@@ -1,3 +1,6 @@
+use super::Comments;
+use super::Tag;
+
 use std::sync::RwLock;
 pub struct Articles {
     articles: RwLock<Vec<Article>>,
@@ -18,6 +21,44 @@ impl Articles {
     pub fn get(&self, id: usize) -> Option<Article> {
         self.articles.read().ok()?.get(id).cloned()
     }
+
+    pub fn vote(&self, id: usize, vote: i8) -> Result<(), String> {
+        if let Ok(mut articles) = self.articles.write() {
+            if let Some(article) = articles.get_mut(id) {
+                article.morevotes += vote.min(0) as u32;
+                article.lessvotes += -vote.max(0) as u32;
+            } else {
+                return Err("article not found".to_string());
+            }
+        } else {
+            return Err("articles blocked".to_string());
+        }
+        Ok(())
+    }
+    //refactor to postable comments or smth. todo
+    pub fn comment(
+        &self,
+        id: usize,
+        author: String,
+        content: String,
+        comments: &mut Comments,
+    ) -> Result<(), String> {
+        if let Ok(mut articles) = self.articles.write() {
+            if let Some(article) = articles.get_mut(id) {
+                return match comments.add(author, content) {
+                    Ok(id) => {
+                        article.comments.push(id);
+                        Ok(())
+                    }
+                    Err(e) => Err(e),
+                };
+            } else {
+                return Err("article not found".to_string());
+            }
+        } else {
+            return Err("articles blocked".to_string());
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -34,6 +75,8 @@ pub struct Article {
     //attachments (future)
     morevotes: u32,
     lessvotes: u32,
+    comments: Vec<usize>, //was comments: Comments before
+    tags: Vec<Tag>,
 }
 
 // #[derive(Serialize, Deserialize, Clone)]
