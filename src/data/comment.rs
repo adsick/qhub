@@ -42,4 +42,11 @@ pub struct Comment {
     //datetime
     //votes
     //subcomments?
+    //tags?
+}
+
+#[derive(Deserialize)]
+pub struct PostableComment{
+    author: String,
+    content: String
 }

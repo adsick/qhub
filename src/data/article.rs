@@ -25,8 +25,8 @@ impl Articles {
     pub fn vote(&self, id: usize, vote: i8) -> Result<(), String> {
         if let Ok(mut articles) = self.articles.write() {
             if let Some(article) = articles.get_mut(id) {
-                article.morevotes += vote.min(0) as u32;
-                article.lessvotes += -vote.max(0) as u32;
+                article.morevotes += vote.max(0) as u32;
+                article.lessvotes += -vote.min(0) as u32;
             } else {
                 return Err("article not found".to_string());
             }
