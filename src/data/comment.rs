@@ -21,9 +21,17 @@ impl Comments {
         }
     }
 
-    fn from_disk() {
-        todo!()
-    } //constructor
+    pub fn get(&self, id: usize) -> Option<Comment> {
+        self.comments.read().ok()?.get(id).cloned()
+    }
+
+    //returns all comment with secified indexes
+    pub fn level(&self, ids: Vec<usize>) -> Vec<Comment> {
+        let comments = self.comments.read().unwrap();
+        ids.iter()
+            .filter_map(|id| comments.get(*id).cloned())
+            .collect()
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone)]

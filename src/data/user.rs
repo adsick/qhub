@@ -59,9 +59,14 @@ impl Users {
             .cloned()
     }
 
-    // pub fn find(&self, username: String)->Option<User>{
-    //     //self.users.read().expect("can not lock users")
-    // }
+    pub fn postvote(&self, username: &str, id: usize, vote: i8) -> Result<(), String> {
+        if let Some(user) = self.users.write().unwrap().get_mut(username) {
+            let entry = user.postvotes.entry(id);
+            entry.or_insert(vote);
+            return Ok(());
+        }
+        Err("user not found".to_string())
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -77,8 +82,11 @@ pub struct User {
     positive: u32, //reputation
     negative: u32, //user settings
 
-                   //votes: Vec<Vote>,
-                   //subscriptions: ...
+    tagvotes: HashMap<usize, i8>,
+    postvotes: HashMap<usize, i8>,
+    commentvotes: HashMap<usize, i8>,
+    //votes: Vec<Vote>,
+    //subscriptions: ...
 }
 
 impl User {
@@ -90,6 +98,10 @@ impl User {
             negative: 0,
             //votes: vec![],
             bio: "".to_string(),
+
+            tagvotes: HashMap::new(),
+            postvotes: HashMap::new(),
+            commentvotes: HashMap::new(),
         }
     }
 }
@@ -100,7 +112,7 @@ impl User {
 //     }
 // }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, FromForm)]
 pub struct PostableUser {
     pub username: String,
     pub password: String,

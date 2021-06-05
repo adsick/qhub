@@ -1,4 +1,5 @@
 use rocket::http::{Cookie, Cookies, SameSite};
+use rocket::request::Form;
 
 use super::utils::*;
 
@@ -30,7 +31,7 @@ pub fn register(
 
 #[post("/login", format = "json", data = "<user>")]
 pub fn login(
-    user: Json<PostableUser>,
+    user: Form<PostableUser>,
     mut cookies: Cookies,
     users: State<Users>,
     sessions: State<Sessions>,

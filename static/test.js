@@ -114,4 +114,21 @@ async function test() {
     //await displayArticle(await getArticleById(0))
 }
 
-test()
+//test()
+
+async function getArticleCHAD() {
+    postFirstArticle("/global")
+    //console.log("");
+    fetch("/global/0")
+      .then((response) => {
+        return response.json();
+      })
+      .then((article) =>{
+        document.getElementById("article-title").textContent = article.title
+        document.getElementById("post-author").textContent = article.author
+        document.getElementById("post-location").textContent = "?"/*article.*/
+        document.getElementById("article-text").textContent = article.content
+        document.getElementById("article-image").setAttribute("src", article.image)
+        //!доделать +-, описание картинки, комменты и теги
+      })
+  }

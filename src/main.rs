@@ -41,7 +41,8 @@ fn main() {
     rocket::ignite()
         .mount("/global", routes![post_article, get_article]) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
         .mount("/user", routes![get_user, login, register])
-        .mount("/", routes![query_hub, query_post, post_article_in_hub])
+        .mount("/comment", routes![get_comment, get_level, add_comment])
+        .mount("/", routes![query_hub, query_post, postvote])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
         .manage(Articles::new())
         .manage(Users::new())

@@ -68,7 +68,7 @@ pub struct Article {
     //attachments (future)
     morevotes: u32,
     lessvotes: u32,
-    comments: Vec<usize>, //was comments: Comments before
+    comments: Vec<usize>,
     tags: Vec<Tag>,
 }
 
