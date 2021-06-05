@@ -1,0 +1,11 @@
+[development]
+address = "0.0.0.0"
+#address = "192.168.31.164"
+port = 8000
+workers = 8
+keep_alive = 5
+read_timeout = 5
+write_timeout = 5
+log = "normal"
+#secret_key = []
+limits = { forms = 32768 }

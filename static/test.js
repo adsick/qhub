@@ -19,8 +19,8 @@ async function getArticleById(id) {
     return article
 }
 
-async function queryArticle(hub, id){
-    let response = await fetch('/query?h='+hub+'&id='+id)
+async function queryArticle(hub, id) {
+    let response = await fetch('/query?h=' + hub + '&id=' + id)
     let article = await response.json() //here it may fail because of trying to parse a 404 page
     return article
 }
@@ -77,10 +77,23 @@ async function postArticle(article) {
 //а тут мы сначала вызываем постинг статьи-примера, а после этого обновляем хтмл, причём мы снова запрашиваем статью с сервера
 //но на этот раз мы получаем эту статью через getArticleById()
 async function test() {
-    
+
     console.log('testing user...')
     let usr = await fetch('/user/adsick')
     console.log(await usr.json())
+
+    let user = { username: "chel", password: "1234" };
+
+    let response = await fetch('/user/register', {
+        method: 'Post',
+        headers: {
+            "Content-type": "application/json"
+        }, body: JSON.stringify(user)
+    })
+    console.log('registration response:')
+    console.log(await response.json())
+
+
 
     console.log('testing posting in hub...');
     await postFirstArticle('/Rust')

@@ -27,6 +27,7 @@ pub fn vote(id: usize, vote: Json<i8>, articles: State<Articles>) -> JsonValue {
     }
 }
 
+//move it to comment(s) mod later
 #[post("/comment/<id>", format = "json", data = "<comment>")]
 pub fn comment(
     id: usize,
@@ -34,15 +35,19 @@ pub fn comment(
     comment: Json<PostableComment>,
     articles: State<Articles>,
     comments: State<Comments>,
+    sessions: State<Sessions>,
 ) -> JsonValue {
     //rework to real session thing
-    let username = match cookies.get("username") {
-        Some(user) => user.to_string(),
-        None => return json!({"status": "error", "reason": "session invalid"}),
+    let token = match cookies.get("token") {
+        Some(token) => token.to_string(),
+        None => return json!({"status": "error", "reason": "session token not found"}),
     };
-
+    let username = match sessions.get(&token) {
+        Some(username) => username,
+        None => return json!({"status": "err", "reason": "invalid token"}),
+    };
+    let username = username.to_owned();
     let comment = comment.into_inner().authorize(username);
-
     match articles.comment(id, comment, &comments) {
         Ok(()) => json!({"status": "successful"}),
         Err(e) => json!({"status": "error", "reason": e}),

@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use std::sync::RwLock;
+#[derive(Debug)]
 pub struct Users {
     users: RwLock<HashMap<String, User>>,
 }
@@ -11,18 +12,26 @@ impl Users {
             users: RwLock::new(HashMap::new()),
         }
     }
-
-    pub fn add(&self, username: String, userdata: User) -> Result<(), String> {
+    //mb rename to "register"?
+    pub fn add(&self, username: String, password: String) -> Result<(), String> {
         {
-            let users = self.users.read().unwrap();
+            
+            if let Ok(users) = self.users.read() {
+                
+                if users.contains_key(&username) {
+                    return Err(format!("username '{}' has already been taken", username));
+                }
+                std::mem::drop(users);
+                
+                if let Ok(mut users) = self.users.write() {
+                    users.insert(username, User::new(password));
+                } else {
+                    return Err("failed to get write lock on users".to_string());
+                }
 
-            if users.contains_key(&username) {
-                return Err("this user already exists".to_string());
+                return Ok(());
             }
-            //std::mem::drop(users);
-            let mut users = self.users.write().unwrap();
-            users.insert(username, userdata);
-            Ok(())
+            Err("users blocked".to_string())
         }
     }
 
@@ -39,7 +48,7 @@ impl Users {
     // }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct User {
     //username: String,
     password: String, //todo hashing
@@ -57,7 +66,7 @@ pub struct User {
 }
 
 impl User {
-    fn new(nick: String, pass: String) -> Self {
+    fn new(pass: String) -> Self {
         User {
             //username: nick,
             password: pass,
@@ -73,4 +82,31 @@ impl User {
 //     fn eq(&self, other: &Self) -> bool {
 //         self.username == other.username
 //     }
+// }
+
+#[derive(Deserialize)]
+pub struct PostableUser {
+    pub username: String,
+    pub password: String,
+}
+
+// pub struct UserAccess{
+//     pub username: String
+// }
+
+// impl<'a, 'r> rocket::request::FromRequest<'a, 'r> for UserAccess{
+//     type Error = UserAccessError;
+
+//     fn from_request(request: &'a rocket::Request<'r>) -> rocket::request::Outcome<Self, Self::Error> {
+//         let token =
+//         match request.cookies().get_private("token"){
+//             Some(token) => token.to_string(),
+//             None => return Outcome(UserAccessError::TokenNotFound)
+            
+//         }
+//     }
+// } 
+// #[derive(Debug)]
+// enum UserAccessError{
+//     TokenNotFound
 // }

@@ -77,6 +77,6 @@ pub struct Article {
 
 // }
 
-impl Article {
-    fn header(&self) {}
-}
+// impl Article {
+//     fn header(&self) {}
+// }

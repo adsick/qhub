@@ -19,7 +19,6 @@ use data::*;
 
 mod routes;
 use routes::*;
-//use std::sync::RwLock;
 
 #[get("/")]
 fn hello() -> Html<String> {
@@ -41,11 +40,12 @@ fn post_article_in_hub(article: Json<Article>, h: String, hubs: State<Hubs>) -> 
 fn main() {
     rocket::ignite()
         .mount("/global", routes![post_article, get_article]) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
-        .mount("/user", routes![get_user])
+        .mount("/user", routes![get_user, register])
         .mount("/", routes![query_hub, query_post, post_article_in_hub])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
         .manage(Articles::new())
         .manage(Users::new())
         .manage(Hubs::test())
+        .manage(Sessions::default())
         .launch();
 }
