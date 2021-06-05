@@ -647,7 +647,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "qh210521"
+name = "qhub"
 version = "0.1.0"
 dependencies = [
  "rand",

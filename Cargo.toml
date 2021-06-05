@@ -1,8 +1,10 @@
 [package]
-name = "qh210521"
+name = "qhub"
 version = "0.1.0"
-authors = ["vadim"]
+authors = ["adsick"]
 edition = "2018"
+description = "a normal social network"
+repository = "https://github.com/adsick/qhub"
 
 [dependencies]
 rocket = {path = "../Rocket/core/lib"}
