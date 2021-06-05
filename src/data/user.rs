@@ -15,14 +15,12 @@ impl Users {
     //mb rename to "register"?
     pub fn add(&self, username: String, password: String) -> Result<(), String> {
         {
-            
             if let Ok(users) = self.users.read() {
-                
                 if users.contains_key(&username) {
                     return Err(format!("username '{}' has already been taken", username));
                 }
-                std::mem::drop(users);
-                
+                std::mem::drop(users); //users will block without it
+
                 if let Ok(mut users) = self.users.write() {
                     users.insert(username, User::new(password));
                 } else {
@@ -30,6 +28,24 @@ impl Users {
                 }
 
                 return Ok(());
+            }
+            Err("users blocked".to_string())
+        }
+    }
+
+    pub fn login(&self, username: String, password: String) -> Result<(), String> {
+        {
+            if let Ok(users) = self.users.read() {
+                match users.get(&username) {
+                    Some(u) => {
+                        if u.password == password {
+                            return Ok(());
+                        }
+                    }
+                    None => return Err(format!("user '{}' not found", username)),
+                }
+
+                //return Ok(());
             }
             Err("users blocked".to_string())
         }
@@ -102,10 +118,10 @@ pub struct PostableUser {
 //         match request.cookies().get_private("token"){
 //             Some(token) => token.to_string(),
 //             None => return Outcome(UserAccessError::TokenNotFound)
-            
+
 //         }
 //     }
-// } 
+// }
 // #[derive(Debug)]
 // enum UserAccessError{
 //     TokenNotFound

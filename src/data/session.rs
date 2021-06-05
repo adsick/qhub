@@ -9,9 +9,11 @@ pub struct Sessions {
     sessions: RwLock<HashMap<String, Session>>,
 }
 
-impl Default for Sessions{
+impl Default for Sessions {
     fn default() -> Self {
-        Sessions{sessions: RwLock::new(HashMap::new())}
+        Sessions {
+            sessions: RwLock::new(HashMap::new()),
+        }
     }
 }
 
@@ -22,10 +24,10 @@ impl Sessions {
         let mut sessions = self.sessions.write().unwrap();
         println!("generating the token");
         let mut token = generate_token(LEN);
-            
-            while sessions.contains_key(&token) {
-                token = generate_token(LEN)
-            }
+
+        while sessions.contains_key(&token) {
+            token = generate_token(LEN)
+        }
 
         println!("the token '{}' is ready", token);
         sessions.insert(token.clone(), Session::new(username));

@@ -40,7 +40,7 @@ fn post_article_in_hub(article: Json<Article>, h: String, hubs: State<Hubs>) -> 
 fn main() {
     rocket::ignite()
         .mount("/global", routes![post_article, get_article]) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
-        .mount("/user", routes![get_user, register])
+        .mount("/user", routes![get_user, login, register])
         .mount("/", routes![query_hub, query_post, post_article_in_hub])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
         .manage(Articles::new())

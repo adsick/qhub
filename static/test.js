@@ -74,8 +74,6 @@ async function postArticle(article) {
         .catch(error => console.log('ERROR:' + error))
 }
 
-//а тут мы сначала вызываем постинг статьи-примера, а после этого обновляем хтмл, причём мы снова запрашиваем статью с сервера
-//но на этот раз мы получаем эту статью через getArticleById()
 async function test() {
 
     console.log('testing user...')
@@ -83,7 +81,6 @@ async function test() {
     console.log(await usr.json())
 
     let user = { username: "chel", password: "1234" };
-
     let response = await fetch('/user/register', {
         method: 'Post',
         headers: {
@@ -91,6 +88,19 @@ async function test() {
         }, body: JSON.stringify(user)
     })
     console.log('registration response:')
+    console.log(await response.json())
+
+
+    console.log('testing login...')
+    //whai js has no variable shadowing?
+    //let user = { username: "chel", password: "1234" };
+    response = await fetch('/user/login', {
+        method: 'Post',
+        headers: {
+            "Content-type": "application/json"
+        }, body: JSON.stringify(user)
+    })
+    console.log('login response:')
     console.log(await response.json())
 
 
