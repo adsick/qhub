@@ -1,4 +1,4 @@
-use super::{Article, Articles};
+//use super::{Article, Articles};
 use std::collections::HashMap;
 use std::sync::RwLock;
 
@@ -28,46 +28,17 @@ impl Hubs {
         self.hubs.write().unwrap().insert(h, Hub::new());
         Ok(())
     }
-
-    // pub fn get(& self, h: String)->&Hub{
-    //     let hubs = self.hubs.read().unwrap();
-    //     let hub = hubs.get(&h).unwrap();
-    //     return hub
-    // }
-
-    pub fn query_article(&self, h: &str, id: usize) -> Option<Article> {
-        let hubs = self.hubs.read().unwrap();
-        let h = hubs.get(h);
-        match h {
-            Some(h) => h.articles.get(id),
-            None => None,
-        }
-    }
-    pub fn post_article(&self, h: &str, article: Article) -> Result<usize, String> {
-        let hubs = self.hubs.read().unwrap();
-        let h = hubs.get(h);
-        match h {
-            Some(h) => {
-                if let Some(u) = h.articles.add(article) {
-                    Ok(u)
-                } else {
-                    Err("couldn't add article".to_string())
-                }
-            }
-            None => Err("this hub does not exists".to_owned()),
-        }
-    }
 }
 
 pub struct Hub {
     //datetime?
-    pub articles: Articles,
+//pub articles: Articles,
 }
 
 impl Hub {
     fn new() -> Self {
         Hub {
-            articles: Articles::new(),
+            //articles: Articles::new(),
         }
     }
 }

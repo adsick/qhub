@@ -3,6 +3,7 @@ use super::Comments;
 use super::Tag;
 
 use std::sync::RwLock;
+use std::sync::RwLockReadGuard;
 pub struct Articles {
     articles: RwLock<Vec<Article>>,
 }
@@ -22,6 +23,7 @@ impl Articles {
     pub fn get(&self, id: usize) -> Option<Article> {
         self.articles.read().ok()?.get(id).cloned()
     }
+
     pub fn vote(&self, id: usize, vote: i8) -> Result<(), String> {
         if let Ok(mut articles) = self.articles.write() {
             if let Some(article) = articles.get_mut(id) {
@@ -52,12 +54,17 @@ impl Articles {
             return Err("articles blocked".to_string());
         }
     }
+
+    pub fn read(&self) -> RwLockReadGuard<Vec<Article>> {
+        self.articles.read().unwrap()
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Article {
-    title: String,
-    author: String,
+    pub title: String,
+    pub author: String,
+    pub hub: String, //new
 
     content: String,
     //datetime (todo?)

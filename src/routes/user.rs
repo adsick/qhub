@@ -4,10 +4,10 @@ use rocket::request::Form;
 use super::utils::*;
 
 use crate::Users;
-
-#[post("/register", format = "json", data = "<user>")]
+//todo format
+#[post("/register", data = "<user>")]
 pub fn register(
-    user: Json<PostableUser>,
+    user: Form<PostableUser>,
     mut cookies: Cookies,
     users: State<Users>,
     sessions: State<Sessions>,
@@ -28,8 +28,9 @@ pub fn register(
         Err(e) => json!({"status": "error", "reason": e}),
     }
 }
-
-#[post("/login", format = "json", data = "<user>")]
+//todo format
+//this can create unnecessary sessions,
+#[post("/login", data = "<user>")]
 pub fn login(
     user: Form<PostableUser>,
     mut cookies: Cookies,
@@ -37,9 +38,13 @@ pub fn login(
     sessions: State<Sessions>,
 ) -> JsonValue {
     let PostableUser { username, password } = user.0;
-
+    println!(
+        "user: {} wants to login with password: {}",
+        username, password
+    );
     match users.login(username.clone(), password) {
         Ok(()) => {
+            println!("login successful");
             let token = sessions.new(username);
             let mut cookie = Cookie::new("token", token);
             cookie.set_http_only(true);
@@ -48,7 +53,11 @@ pub fn login(
             cookies.add(cookie);
             json!({"status": "success"})
         }
-        Err(e) => json!({"status": "error", "reason": e}),
+
+        Err(e) => {
+            println!("login failed, reason: {}", e);
+            json!({"status": "error", "reason": e})
+        }
     }
 }
 

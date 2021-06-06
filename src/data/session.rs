@@ -20,7 +20,7 @@ impl Default for Sessions {
 impl Sessions {
     #[must_use]
     pub fn new(&self, username: String) -> String {
-        println!("obtaining sessions write lock");
+        println!("Sessions::new(&self, username = {})", username);
         let mut sessions = self.sessions.write().unwrap();
         println!("generating the token");
         let mut token = generate_token(LEN);
@@ -31,6 +31,9 @@ impl Sessions {
 
         println!("the token '{}' is ready", token);
         sessions.insert(token.clone(), Session::new(username));
+
+        println!("current sessions: {:?}", sessions);
+
         token
     }
 
@@ -40,7 +43,7 @@ impl Sessions {
     }
 
     fn generate_unique_token(&self, len: u8) -> String {
-        //this blocks
+        //this blocks when called inside of fn new, consider rewrite if needed
         let sessions = self.sessions.read().unwrap();
         let mut token = generate_token(len);
 
@@ -51,6 +54,7 @@ impl Sessions {
     }
 }
 
+#[derive(Debug)]
 pub struct Session {
     username: String,
     //some additional stuff like lifetime
@@ -62,6 +66,7 @@ impl Session {
     }
 }
 
+//random token
 fn generate_token(len: u8) -> String {
     let mut res = String::with_capacity(len as usize);
     let mut rng = rand::thread_rng();

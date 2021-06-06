@@ -5,12 +5,12 @@ pub struct Comments {
 }
 
 impl Comments {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Comments {
             comments: RwLock::new(vec![]),
         }
     }
-    //looks like non best api for this, we need a smooth transition from postable comment to this.
+
     pub fn add(&self, comment: Comment) -> Result<usize, String> {
         if let Ok(mut comments) = self.comments.write() {
             let id = comments.len();
@@ -25,7 +25,7 @@ impl Comments {
         self.comments.read().ok()?.get(id).cloned()
     }
 
-    //returns all comment with secified indexes
+    //returns all comments with specified indexes
     pub fn level(&self, ids: Vec<usize>) -> Vec<Comment> {
         let comments = self.comments.read().unwrap();
         ids.iter()
@@ -60,7 +60,6 @@ impl Comment {
 
 #[derive(Deserialize)]
 pub struct PostableComment {
-    //author: String,
     content: String,
 }
 

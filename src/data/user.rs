@@ -80,12 +80,11 @@ pub struct User {
     //contacts
     //honors
     positive: u32, //reputation
-    negative: u32, //user settings
+    negative: u32,
 
     tagvotes: HashMap<usize, i8>,
     postvotes: HashMap<usize, i8>,
     commentvotes: HashMap<usize, i8>,
-    //votes: Vec<Vote>,
     //subscriptions: ...
 }
 
@@ -106,35 +105,54 @@ impl User {
     }
 }
 
-// impl PartialEq for User {
-//     fn eq(&self, other: &Self) -> bool {
-//         self.username == other.username
-//     }
-// }
-
 #[derive(Deserialize, FromForm)]
 pub struct PostableUser {
     pub username: String,
     pub password: String,
 }
 
-// pub struct UserAccess{
-//     pub username: String
-// }
+pub struct UserAccess {
+    pub username: String,
+}
 
-// impl<'a, 'r> rocket::request::FromRequest<'a, 'r> for UserAccess{
-//     type Error = UserAccessError;
+use crate::data::Sessions;
+use rocket::http::Status;
+use rocket::request::Outcome;
+use rocket::State;
 
-//     fn from_request(request: &'a rocket::Request<'r>) -> rocket::request::Outcome<Self, Self::Error> {
-//         let token =
-//         match request.cookies().get_private("token"){
-//             Some(token) => token.to_string(),
-//             None => return Outcome(UserAccessError::TokenNotFound)
+//use rocket_contrib::json::Json;
+impl<'a, 'r> rocket::request::FromRequest<'a, 'r> for UserAccess {
+    type Error = UserAccessError;
 
-//         }
-//     }
-// }
-// #[derive(Debug)]
-// enum UserAccessError{
-//     TokenNotFound
-// }
+    fn from_request(
+        request: &'a rocket::Request<'r>,
+    ) -> rocket::request::Outcome<Self, Self::Error> {
+        // let users = request.guard::<State<Users>>();
+        // let sessions = request.guard::<State<Sessions>>();
+
+        let token = request.cookies().get("token").map(|c| c.to_string());
+        match token {
+            Some(token) => {
+                //let users = request.guard::<State<Users>>().unwrap();
+                let sessions = request.guard::<State<Sessions>>().unwrap();
+
+                match sessions.get(&token) {
+                    Some(username) => return Outcome::Success(UserAccess { username }),
+                    None => {
+                        return Outcome::Failure((
+                            Status::Unauthorized,
+                            UserAccessError::SessionExpired,
+                        ))
+                    }
+                }
+            }
+
+            None => return Outcome::Failure((Status::NotFound, UserAccessError::TokenNotFound)),
+        };
+    }
+}
+#[derive(Debug)]
+pub enum UserAccessError {
+    TokenNotFound,
+    SessionExpired,
+}
