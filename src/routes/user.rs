@@ -61,6 +61,18 @@ pub fn login(
     }
 }
 
+//testing needed
+#[get("/logout")]
+pub fn logout(user: UserAccess, sessions: State<Sessions>) -> JsonValue {
+    let username = user.username;
+
+    sessions.logout(&username);
+
+    #[cfg(debug_assertions)]
+    println!("current sessions: {:?}", sessions.read());
+    json!("kek")
+}
+
 #[get("/<username>")]
 pub fn get_user(username: String, users: State<Users>) -> JsonValue {
     if let Some(bio) = users.get(username).map(|u| u.bio) {

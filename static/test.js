@@ -132,3 +132,41 @@ async function getArticleCHAD() {
         //!доделать +-, описание картинки, комменты и теги
       })
   }
+
+
+  async function troll(){
+
+    let vadim = { username: "Вадим", password: "228" };
+    let response = await fetch('/user/register', {
+        method: 'Post',
+        headers: {
+            "Content-type": "application/x-www-form-urlencoded"
+        }, body: "username=vadim&password=228"
+    })
+    console.log('registration response:')
+    console.log(await response.json())
+
+
+    console.log('trolling begun')
+    for(i = 0; i < 1000; i++){
+        let t = {
+            "title": "опа, я зарегистрировалсяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя",
+            "hub": "кухабббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббббб",
+            "content": "нормальноооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооооо",
+            "image": "img_1.jpeg",
+            "image_title": "фыалввввввввввввввввввв",
+            "image_description": "ккккккккккккккккккккккккккккккк",
+        };
+        /*response = await*/ fetch('/global', {
+            method: 'Post',
+            headers: {
+                "Content-type": "application/json"
+            }, body: JSON.stringify(t)
+        })
+        //console.log('troll:')
+        //console.log(await response.json())
+    }
+    console.log('trolling finished')
+  }
+
+  //troll()

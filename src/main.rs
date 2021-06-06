@@ -24,8 +24,11 @@ fn hello() -> Html<String> {
 
 fn main() {
     rocket::ignite()
-        .mount("/global", routes![post_article, get_article]) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
-        .mount("/user", routes![get_user, login, register])
+        .mount(
+            "/global",
+            routes![post_article, post_article_access, get_article],
+        ) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
+        .mount("/user", routes![get_user, register, login, logout])
         .mount("/comment", routes![get_comment, get_level, add_comment])
         .mount("/", routes![query_hub, postvote])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future

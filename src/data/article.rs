@@ -1,9 +1,7 @@
-use super::Comment;
-use super::Comments;
-use super::Tag;
+use super::{Comment, Comments, Tag};
 
-use std::sync::RwLock;
-use std::sync::RwLockReadGuard;
+use std::sync::{RwLock, RwLockReadGuard};
+#[derive(Debug)]
 pub struct Articles {
     articles: RwLock<Vec<Article>>,
 }
@@ -14,11 +12,11 @@ impl Articles {
             articles: RwLock::new(vec![]),
         }
     }
-    pub fn add(&self, article: Article) -> Option<usize> {
-        let mut articles = self.articles.write().ok()?;
+    pub fn add(&self, article: Article) -> usize {
+        let mut articles = self.articles.write().unwrap();
         let id = articles.len();
         articles.push(article);
-        Some(id)
+        id
     }
     pub fn get(&self, id: usize) -> Option<Article> {
         self.articles.read().ok()?.get(id).cloned()
@@ -60,13 +58,13 @@ impl Articles {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Article {
     pub title: String,
     pub author: String,
     pub hub: String, //new
+    pub content: String,
 
-    content: String,
     //datetime (todo?)
     image: String,
     image_title: String,
@@ -79,11 +77,52 @@ pub struct Article {
     tags: Vec<Tag>,
 }
 
-// #[derive(Serialize, Deserialize, Clone)]
-// pub struct ArticleHeader{
+impl Default for Article {
+    fn default() -> Self {
+        Article {
+            title: "".to_string(),
+            author: "".to_string(),
+            hub: "".to_string(),
+            content: "".to_string(),
 
-// }
+            image: "".to_string(),
+            image_title: "".to_string(),
+            image_description: "".to_string(),
 
-// impl Article {
-//     fn header(&self) {}
-// }
+            morevotes: 0,
+            lessvotes: 0,
+            comments: vec![],
+            tags: vec![],
+        }
+    }
+}
+
+#[derive(Deserialize, Debug)]
+pub struct PostableArticle {
+    pub title: String,
+    pub hub: String,
+    pub content: String,
+
+    image: String,
+    image_title: String,
+    image_description: String,
+}
+
+impl PostableArticle {
+    pub fn authorize(self, username: String) -> Article {
+        let mut article = Article::default();
+
+        article.title = self.title;
+
+        article.author = username;
+
+        article.hub = self.hub;
+        article.content = self.content;
+
+        article.image = self.image;
+        article.image_title = self.image_title;
+        article.image_description = self.image_description;
+
+        article
+    }
+}

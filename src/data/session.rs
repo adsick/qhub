@@ -1,10 +1,11 @@
 use std::collections::HashMap;
 use std::sync::RwLock;
+use std::sync::RwLockReadGuard;
 
 use rand::prelude::*;
 
 const LEN: u8 = 8;
-
+#[derive(Debug)]
 pub struct Sessions {
     sessions: RwLock<HashMap<String, Session>>,
 }
@@ -20,7 +21,6 @@ impl Default for Sessions {
 impl Sessions {
     #[must_use]
     pub fn new(&self, username: String) -> String {
-        println!("Sessions::new(&self, username = {})", username);
         let mut sessions = self.sessions.write().unwrap();
         println!("generating the token");
         let mut token = generate_token(LEN);
@@ -40,6 +40,16 @@ impl Sessions {
     pub fn get(&self, token: &str) -> Option<String> {
         let sessions = self.sessions.read().unwrap();
         sessions.get(token).map(|s| s.username.to_owned())
+    }
+
+    pub fn logout(&self, username: &str) {
+        let mut sessions = self.sessions.write().unwrap();
+        //sessions.values_mut().for_each(|s| if s.username == username {s.username});
+        sessions.retain(|k, v| v.username != username)
+    }
+
+    pub fn read(&self) -> RwLockReadGuard<HashMap<String, Session>> {
+        self.sessions.read().unwrap()
     }
 
     fn generate_unique_token(&self, len: u8) -> String {

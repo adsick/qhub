@@ -129,25 +129,27 @@ impl<'a, 'r> rocket::request::FromRequest<'a, 'r> for UserAccess {
     ) -> rocket::request::Outcome<Self, Self::Error> {
         // let users = request.guard::<State<Users>>();
         // let sessions = request.guard::<State<Sessions>>();
-
-        let token = request.cookies().get("token").map(|c| c.to_string());
+        let cookies = request.cookies();
+        let token = cookies.get("token").map(|c| c.value());
         match token {
             Some(token) => {
-                //let users = request.guard::<State<Users>>().unwrap();
                 let sessions = request.guard::<State<Sessions>>().unwrap();
 
                 match sessions.get(&token) {
                     Some(username) => return Outcome::Success(UserAccess { username }),
                     None => {
+                        println!("token: '{}' not found", token);
+                        println!("sessions are: {:?}", sessions);
                         return Outcome::Failure((
                             Status::Unauthorized,
                             UserAccessError::SessionExpired,
-                        ))
+                        ));
                     }
                 }
             }
 
-            None => return Outcome::Failure((Status::NotFound, UserAccessError::TokenNotFound)),
+            None => return Outcome::Forward(()),
+            //None => return Outcome::Failure((Status::NotFound, UserAccessError::TokenNotFound)),
         };
     }
 }

@@ -47,7 +47,6 @@ pub fn add_comment(
 #[post("/<id>", format = "json", data = "<comment>")]
 pub fn add_comment_access(
     id: usize,
-
     comment: Json<PostableComment>,
     articles: State<Articles>,
     comments: State<Comments>,
