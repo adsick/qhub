@@ -1,0 +1,68 @@
+.comments {
+  width: $comments-width;
+  height: 100vh;
+  background-color: $black;
+  position: fixed;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  top: 0;
+  right: 0;
+  z-index: $z-index-comments;
+  color: $white;
+}
+
+.comment-section {
+  //margin-top: 8rem;
+  padding-bottom: 10rem;
+  //overflow-y: scroll;
+  height: fit-content;
+  position: relative;
+}
+.comment {
+  width: $comments-width;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  background-color: $black;
+  input {
+    display: block;
+    width: 100%;
+    padding: 1.2rem 2rem;
+
+    background: rgba($dark-gray, 8);
+    border: none;
+
+    font-family: inherit;
+    font-size: 1.5rem;
+    color: $white;
+
+    &::placeholder {
+      color: rgba($white, 0.7);
+    }
+  }
+  .btn {
+    display: inline-block;
+    padding: 1rem 1.2rem;
+    width: 20%;
+
+    background: rgba($dark-gray, 8);
+    border: none;
+
+    transition: background-color 0.2s linear;
+
+    &:hover {
+      background-color: lighten($dark-gray, 12);
+    }
+
+    .send {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      color: $gray;
+      background-color: transparent;
+    }
+  }
+}

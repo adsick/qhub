@@ -1,1 +1,88 @@
-!function(e){var t={};function n(i){if(t[i])return t[i].exports;var r=t[i]={i:i,l:!1,exports:{}};return e[i].call(r.exports,r,r.exports,n),r.l=!0,r.exports}n.m=e,n.c=t,n.d=function(e,t,i){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:i})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var i=Object.create(null);if(n.r(i),Object.defineProperty(i,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var r in e)n.d(i,r,function(t){return e[t]}.bind(null,r));return i},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=0)}([function(e,t,n){n(1),e.exports=n(2)},function(e,t){var n=document.querySelectorAll("[activity-option]");document.body;n.forEach((function(e){e.addEventListener("click",(function(e){var t=e.target.getAttribute("activity-option");n.forEach((function(e){e.getAttribute("activity-option")==t?e.classList.add("--activity-block-chosen"):e.classList.remove("--activity-block-chosen")}))}))}))},function(e,t){var n,i,r,s,o,c,l,a,u;for(s=(n=document.getElementsByClassName("custom-select")).length,i=0;i<s;i++){for(o=(c=n[i].getElementsByTagName("select")[0]).length,(l=document.createElement("DIV")).setAttribute("class","select-selected"),l.innerHTML=c.options[c.selectedIndex].innerHTML,n[i].appendChild(l),(a=document.createElement("DIV")).setAttribute("class","select-items select-hide"),r=1;r<o;r++)(u=document.createElement("DIV")).innerHTML=c.options[r].innerHTML,u.addEventListener("click",(function(e){var t,n,i,r,s,o,c;for(o=(r=this.parentNode.parentNode.getElementsByTagName("select")[0]).length,s=this.parentNode.previousSibling,n=0;n<o;n++)if(r.options[n].innerHTML==this.innerHTML){for(r.selectedIndex=n,s.innerHTML=this.innerHTML,c=(t=this.parentNode.getElementsByClassName("same-as-selected")).length,i=0;i<c;i++)t[i].removeAttribute("class");this.setAttribute("class","same-as-selected");break}s.click()})),a.appendChild(u);n[i].appendChild(a),l.addEventListener("click",(function(e){e.stopPropagation(),d(this),this.nextSibling.classList.toggle("select-hide"),this.classList.toggle("select-arrow-active")}))}function d(e){var t,n,i,r,s,o=[];for(t=document.getElementsByClassName("select-items"),n=document.getElementsByClassName("select-selected"),r=t.length,s=n.length,i=0;i<s;i++)e==n[i]?o.push(i):n[i].classList.remove("select-arrow-active");for(i=0;i<r;i++)o.indexOf(i)&&t[i].classList.add("select-hide")}document.addEventListener("click",d)}]);
+
+
+const body = document.body;
+
+
+// функция принимает название тега и объект с настройками
+const createEl = (tag, opts) => {
+  const el = document.createElement(tag);
+  // перебираем ключи объекта и записывает соответствующие свойства в элемент
+  for (const key in opts) {
+    el[key] = opts[key];
+  }
+  // возвращаем готовый элемент
+  return el;
+};
+
+/*const button = createEl('button', {
+    настройками могут быть атрибуты
+    id: 'my_button',
+    className: 'btn btn-primary',
+    textContent: 'Click me',
+  
+    title: 'My button',
+    autofocus: true,
+  
+    стили
+    style: 'color: red; cursor: pointer;',
+  
+    обработчики и т.д.
+    onmouseenter: function () {
+      this.style.color = 'green'
+    },
+    onmouseout: function () {
+      this.style.color = 'blue'
+    },
+  
+    onclick: () => alert('Привет!')
+  })*/
+
+  function createPostPreviewHTML(post){
+    let preview = document.createElement('div')
+    preview.classList.add('post')
+    preview.innerHTML = `<div class="post-image"> 
+      <a class="post-image" href="post.html">
+          <img src="${post.image}" alt="Image">
+      </a>
+    </div>
+    <div class="post-content">
+        <div class="post-header"> 
+            <div class="post-author-info">
+                <a href="personal-page.html" class="author">
+                    <img src="${post.authorAvatar}" alt="" class="author-img">
+                </a>
+                <div class="author-nickname">
+                    <a href="personal-page.html">${post.author}</a>
+                    <ul class="post-data">
+                        <li class="post-data_item">
+                            <time datetime="2021-04-18 14:26">${post.time}</time>
+                        </li>
+                    </ul>
+                </div>
+            </div>               
+            <div>
+                <p>posted in</p>
+                <a class="hub-title" href="hub.html">${post.location}</a>
+            </div>
+        </div>
+        <div class="post-title">
+            <a class="post-link" href="post.html">${post.title}</a>            
+        </div>      
+        <div class="post-footer">
+            <p class="post-text">${post.content}</p>
+            <div class="votes">
+                <ul>
+                    <li class="upvotes">
+                        <img src="assets/images/up-arrow.svg" alt="">
+                        <p>${post.upvotes}</p>
+                    </li>
+                    <li class="downvotes">
+                        <img src="assets/images/down-arrow.svg" alt="">
+                        <p>${post.downvotes}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>                  
+    </div>`
+    return preview
+  }

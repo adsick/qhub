@@ -1,0 +1,63 @@
+.comment-item{
+    display: block;
+    margin: 1.5rem 0.4rem;
+    padding: 0;
+    
+    
+    box-shadow: 0 2px 4px rgba($black, .2);
+    background-color: lighten($dark-gray, 2%);
+    overflow: hidden;
+
+    border-radius: 5px;
+
+}
+.comment-header{
+    display: flex;
+    color: $white;
+    padding: 1rem;
+
+    .comment-avatar{
+        margin-right: 1rem;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        object-fit: cover;
+        img{
+            display: block;
+        }
+    }
+
+    
+
+    .after-avatar{
+        display: block;
+        
+        li{
+            list-style-type: none;
+        }
+        .nickname{
+            text-decoration: none;
+            color: inherit;  
+            font-weight: 600;  
+        }
+
+        time{
+            color: $gray;
+        }
+
+    }
+
+}
+
+.comment-text{
+    background-color: lighten($light-gray, 5%);
+    color: $black;
+    padding: 0.8rem 1rem;
+    .reply{
+        margin: 0.4rem 0rem;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    
+}
+

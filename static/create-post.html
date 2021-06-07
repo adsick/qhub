@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+    
+    <!-- Useful meta tags -->
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="index, follow">
+    <meta name="google" content="notranslate">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="">
+    
+    <title>QHUB | Post Creation</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+</head>
+<body>
+    <script defer src="assets/js/app.js"></script>
+    <script defer src="assets/js/create-post.js"></script>
+
+    <div class="page">
+        
+
+        <aside class="sidebar">
+            <a class="btnQ" href="/">Q</a>
+            <a class="btnH" href="hubs.html">H</a>
+            <a class="btnU" href="personal-page.html">U</a>
+            <a class="btnB" href="blogs.html">B</a>
+        </aside>        
+        <main class="main personal-page">
+            <div class="container create-post-container">
+                
+                <form class="form post-create" action="/">
+                    <div class="post-create_title">
+                        <p class="post-create_title-text">Title:</p>
+                        <input id="post-create_title-input" type="text" class="post-create_title-input">
+                        <span class="form_line"></span>
+                    </div>
+                    <div class="post-create_image">
+                        <p class="post-create_image-text">Image(optional)</p>
+                        <div class="ppost-create_image-container">
+                            <input type="file" class="post-create_image-input" id="post-create_image-input" accept="image/*">
+                            
+                        </div>
+                       
+                        
+                    </div>
+                    <div class="post-create_content">
+                        <p class="post-create_content-text" id="post-create_content-text">Content:</p>
+                        <textarea class="post-create_content-input"></textarea>
+                    </div>
+                    <div class="post-create_tags">
+                        <p class="post-create_tags-text">Add tags to your post:</p>
+                        <input type="text" class="post-create_tags-input">
+                    </div>
+                    <div id="publish-post" class="publishPostBtn">Publish post</div>
+                </form>
+                
+            </div>
+            
+        </main>   
+        
+    </div>
+    
+
+    
+</body>
+</html>

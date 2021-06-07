@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
     
     <!-- Useful meta tags -->
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -191,14 +192,15 @@
     
         <div class="filters_sort-by">
             <div class="">Sort by:</div>    
-            <div class="custom-select">
-                <select>
-                  <option value="0"></option>
-                  <option value="1">Relevance</option>
-                  <option value="2">Rating</option> 
-                  <option value="3">Newest first</option>                    
-                </select>
-            </div>
+            <div class="filters_select-container">
+                <div class="filters_select-inner-container">
+                  <select>
+                    <option value="">Relevance</option>
+                    <option value="">Rating</option>
+                    <option value="">Newest first</option>               
+                  </select>    
+                </div>
+              </div>
         </div>
        
     
@@ -209,9 +211,21 @@
               </label>
         </div>
     
-        <form action="/" class="filters_tags" method="POST">
-        <p>Add tags: </p>
-        </form>
+       
+        <div class="filters_tags">
+            <p>Add tags: </p>
+           <div class="tags-container">
+               <div class="tag-input">
+                 <input  />  
+               </div>    
+               <br />
+               <br />
+               Press enter after you typed.
+             </div>    </div>
+    
+    
+       
+        
     </aside> 
     
 </body>

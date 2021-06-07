@@ -1,0 +1,49 @@
+.search{
+    background-color: gray;
+    width:100%;
+    display: flex;
+    position: relative;
+    margin-bottom: 4rem;
+
+
+   input{
+        display: block;
+        width: 100%;
+        padding: 1.2rem 2rem;
+
+        background: rgba($dark-gray, 8);
+        border: none;
+
+        font-family: inherit;
+        font-size: 1.5rem;
+        color: $white;
+
+        &::placeholder{
+            color: rgba($white, .7);
+        }
+    }
+    .btn{
+        display: inline-block;        
+        padding: 1rem 1.2rem;
+        width: 20%;
+
+        background: rgba($dark-gray, 8);
+        border: none;
+
+        transition: background-color 0.2s linear;
+
+        &:hover{
+            background-color: lighten($dark-gray, 12);
+        }
+
+        .send{
+            display: block;            
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            color: $gray;
+            background-color: transparent;
+        }
+    }
+}
+
