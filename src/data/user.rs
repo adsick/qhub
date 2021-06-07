@@ -40,6 +40,8 @@ impl Users {
                     Some(u) => {
                         if u.password == password {
                             return Ok(());
+                        } else{
+                            return Err("wrong password".to_string())
                         }
                     }
                     None => return Err(format!("user '{}' not found", username)),

@@ -1,8 +1,16 @@
 use super::utils::*;
+
+use rocket::response::Redirect;
+
 use crate::data::PostableArticle;
 #[get("/<id>", format = "json")]
 pub fn get_article(id: usize, articles: State<Articles>) -> Option<Json<Article>> {
     articles.get(id).map(|article| Json(article))
+}
+
+#[get("/", format = "json")]
+pub fn get_articles() ->Redirect{
+    Redirect::to("query?")
 }
 
 #[post("/", format = "application/json", data = "<article>", rank = 2)]

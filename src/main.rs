@@ -29,7 +29,7 @@ fn main() {
             routes![post_article, post_article_access, get_article],
         ) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
         .mount("/user", routes![get_user, register, login, logout])
-        .mount("/comment", routes![get_comment, get_level, add_comment])
+        .mount("/comment", routes![get_comment, get_level, add_comment_access])
         .mount("/", routes![query_hub, postvote])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
         .manage(Articles::new())
