@@ -11,14 +11,16 @@
     <meta name="google" content="notranslate">
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="">
+
+    <script defer src="assets/js/app.js"></script>
+    <script defer src="test.js"></script>
     
     <title>QHUB | Post</title>
 </head>
-<body>
-    <script defer src="assets/js/app.js"></script>
+<body onload=getArticleCHAD()>
     
 
-    <div class="page">
+    <div class="page" >
         
 
         <aside class="sidebar">
@@ -30,12 +32,14 @@
         <main class="main --post">
             <div class="container article">
                 
+
                 <div class="previous-article">
                   <div class="previous-article_arrow"></div>
                 </div>
                 <div class="next-article">
                   <div class="next-article_arrow"></div>
                 </div>
+
                 <div class="article-votes">
                   <div class="article-upvotes">
                     <i class="material-icons">add</i>
@@ -50,6 +54,7 @@
                     <i class="material-icons">report</i>
                   </div>
                 </div>
+
                 <article onload="getArticle()">
                   <h1 id="article-title" class="article-title">Как я нашёл тяночку</h1>
                   <ul class="post-info">
@@ -115,6 +120,7 @@
                       sed dolore tenetur impedit ipsa dolorem sunt deserunt eligendi.
                     </p>
                   </div>
+
                 </article>
                 
             </div>

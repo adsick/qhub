@@ -8,49 +8,33 @@ extern crate rocket_contrib;
 extern crate serde_derive;
 
 use rocket::response::content::Html;
-use rocket::State;
 use rocket::{get, routes};
-
 use rocket_contrib::serve::StaticFiles;
 
-use rocket_contrib::json::{Json, JsonValue};
+mod data;
+use data::*;
 
-use std::sync::Mutex;
-
-mod article;
-
-use article::*;
+mod routes;
+use routes::*;
 
 #[get("/")]
 fn hello() -> Html<String> {
     Html("<h1>Hello, Rust 2018!<h1>".to_string())
 }
 
-#[get("/<id>", format = "json")]
-fn get(id: u32, map: State<Mutex<Vec<Article>>>) -> Option<Json<Article>> {
-    let articles = map.lock().unwrap();
-
-    articles
-        .get(id as usize)
-        .map(|article| Json(article.clone()))
-}
-
-#[post("/<id>", format = "application/json", data = "<article>")]
-fn new(id: u32, article: Json<Article>, map: State<Mutex<Vec<Article>>>) -> JsonValue {
-    let mut articles = map.lock().expect("articles lock.");
-    let result =
-    match articles.get(id as usize){
-        Some(_) => {json!({"status": "error", "reason": "this index is already used"})}
-        None => {articles.push(article.0); json!({"status": "ok"})}
-    };
-    dbg!(&result);
-    result
-}
-
 fn main() {
     rocket::ignite()
-        //.mount("/", routes![hello, new, get])
-        .mount("/", StaticFiles::from("static"))
-        .manage(Mutex::new(Vec::<Article>::new()))
+        .mount(
+            "/global",
+            routes![post_article, post_article_access, get_article],
+        ) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
+        .mount("/user", routes![get_user, register, login, logout])
+        .mount("/comment", routes![get_comment, get_level, add_comment])
+        .mount("/", routes![query_hub, postvote])
+        .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
+        .manage(Articles::new())
+        .manage(Users::new())
+        .manage(Comments::new())
+        .manage(Sessions::default())
         .launch();
 }
