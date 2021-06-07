@@ -1,4 +1,5 @@
 use super::utils::*;
+
 use rocket::{response::NamedFile, Data};
 use std::{io, path::Path};
 #[post("/<f>", data = "<data>")]
@@ -14,9 +15,3 @@ pub fn upload(f: String, data: Data) -> JsonValue {
         }
     }
 }
-
-// #[get("/<f>")]
-// pub fn download(f: String) -> io::Result<NamedFile> {
-//     NamedFile::open("stupload/".to_string() + &f)
-// }
-    

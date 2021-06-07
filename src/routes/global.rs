@@ -9,7 +9,7 @@ pub fn get_article(id: usize, articles: State<Articles>) -> Option<Json<Article>
 }
 
 #[get("/", format = "json")]
-pub fn get_articles() -> Redirect {
+pub fn get_articles() ->Redirect{
     Redirect::to("query?")
 }
 
@@ -27,10 +27,7 @@ pub fn post_article_access(
     article: Json<PostableArticle>,
     articles: State<Articles>,
 ) -> JsonValue {
-    let mut article = article.into_inner().authorize(user.username);
-
-    article.image.insert_str(0, "upload/");
-
+    let article = article.into_inner().authorize(user.username);
     let id = articles.add(article.to_owned());
     #[cfg(debug_assertions)]
     println!("got articles: {:?}", article);
