@@ -1,0 +1,39 @@
+<aside class="filters">
+    <form class="search" action="/"  method="POST">
+        <input type="text" placeholder="Search in QHUB...">
+        <button class="btn">
+            <img src="assets/images/icons/search.svg" alt="send" class="send">
+        </button>
+    </form>
+
+    <div class="filters_sort-by">
+        <div class="">Sort by:</div>    
+        <div class="filters_select-container">
+            <div class="filters_select-inner-container">
+              <select>
+                <option value="">Relevance</option>
+                <option value="">Rating</option>
+                <option value="">Newest first</option>               
+              </select>    
+            </div>
+          </div>
+    </div>
+   
+
+    <div class="filters_viewed">
+        <label class="checkbox-container">Show viewed
+            <input type="checkbox" checked="checked">
+            <span class="checkmark"></span>
+          </label>
+    </div>
+
+   
+    <div class="filters_tags">
+        <p>Add tags: </p>
+       {{>tags}}
+    </div>
+
+
+   
+    
+</aside> 

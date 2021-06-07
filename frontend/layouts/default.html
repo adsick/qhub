@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{> head }}
+    <script defer src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+    <script defer src="assets/js/app.js"></script>
+    <script defer src="assets/js/upstream.js"></script>
+</head>
+<body>   
+
+    <div class="page">
+        
+
+        {{> sidebar }}
+        
+        <main class="main">
+            <div class="container">
+                {{> body }}
+            </div>
+            
+        </main>   
+        
+    </div>
+    {{>filters}}
+
+    
+</body>
+</html>

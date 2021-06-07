@@ -1,0 +1,34 @@
+.comment-options{
+    box-shadow: 0 0 5px rgba($black, .4);
+}
+.nav-list{
+    display: flex;
+    justify-content: space-between;
+    
+    li{
+        width: 33.3%;
+    }
+}
+
+.btn-comments{
+    display: inline-block;
+    vertical-align: top;
+    padding: 1.1em 1em;
+    width:100%;   
+    background: $dark-gray; 
+    border: none;
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 1.5rem;
+    line-height: 1.1;
+    color: $gray;
+    text-decoration: none;
+
+    transition: background-color 0.2s linear;
+
+    &:hover{
+        background-color: lighten($dark-gray, 8);
+        color: $white;
+    }
+}
