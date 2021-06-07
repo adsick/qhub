@@ -40,6 +40,8 @@ impl Users {
                     Some(u) => {
                         if u.password == password {
                             return Ok(());
+                        } else {
+                            return Err("wrong password".to_string());
                         }
                     }
                     None => return Err(format!("user '{}' not found", username)),
@@ -59,11 +61,16 @@ impl Users {
             .cloned()
     }
 
-    pub fn postvote(&self, username: &str, id: usize, vote: i8) -> Result<(), String> {
+    //ugly code, testing needed
+    pub fn postvote(&self, username: &str, id: usize, vote: i8) -> Result<i8, String> {
         if let Some(user) = self.users.write().unwrap().get_mut(username) {
             let entry = user.postvotes.entry(id);
-            entry.or_insert(vote);
-            return Ok(());
+            let mut before = 0;
+            let entry = entry.and_modify(|v| {
+                before = *v;
+            });
+            let after = entry.or_insert(vote);
+            return Ok(*after - before);
         }
         Err("user not found".to_string())
     }

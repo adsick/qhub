@@ -66,7 +66,7 @@ pub struct Article {
     pub content: String,
 
     //datetime (todo?)
-    image: String,
+    pub image: String,
     image_title: String,
     image_description: String,
 
@@ -103,7 +103,7 @@ pub struct PostableArticle {
     pub hub: String,
     pub content: String,
 
-    image: String,
+    pub image: String,
     image_title: String,
     image_description: String,
 }
