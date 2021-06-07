@@ -32,8 +32,8 @@ pub fn post_article_access(
     article.image.insert_str(0, "upload/");
 
     let id = articles.add(article.to_owned());
-    //#[cfg(debug_assertions)]
-    //println!("got articles: {:?}", articles.read());
+    #[cfg(debug_assertions)]
+    println!("got articles: {:?}", article);
 
     json!({"status": "success", "id":  id})
 }

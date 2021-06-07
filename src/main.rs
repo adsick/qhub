@@ -33,7 +33,7 @@ fn main() {
             "/comment",
             routes![get_comment, get_level, add_comment_access],
         )
-        .mount("/upload", routes![upload, download])
+        .mount("/upload", routes![upload])
         .mount("/", routes![query_hub, postvote])
         .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
         .manage(Articles::new())
