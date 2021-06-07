@@ -29,7 +29,55 @@
         <main class="main">
             <div class="container">
                 
-                
+                <div class="blogs_subscriptions">
+                    <p class="blogs_subscriptions-capture">
+                        Subscriptions
+                    </p>
+                    <div class="blog-item">
+                        <img src="assets/images/avatars/hub-1.jpg" alt="Hub picture" class="blog-item-avatar">
+                        <div class="blog-item_info">
+                            <a href="blog.html" class="blog-item_name">Music</a>
+                            <p class="blog-item_subscribers">Subscribers: 731</p>
+                        </div>
+                        <div class="blog-item_creator">
+                            <p>Author: </p>
+                            <a href="personal-page.html" class="author-link">
+                                Hamilton
+                            </a>
+                        </div>
+                        <div class="blog-item_posts">
+                            <p>Posts: </p>
+                            <p>538</p>
+                        </div>
+                    </div>
+                   
+                   
+                    <!-- blog item -->
+                </div>
+                <!-- subscriptions -->
+                <div class="blogs_other-hubs">
+                    <p class="blogs_other-hubs-capture">
+                        Other blogs
+                    </p>
+                    <div class="blog-item">
+                        <img src="assets/images/avatars/hub-1.jpg" alt="Hub picture" class="blog-item-avatar">
+                        <div class="blog-item_info">
+                            <a href="blog.html" class="blog-item_name">Music</a>
+                            <p class="blog-item_subscribers">Members: 731</p>
+                        </div>
+                        <div class="blog-item_creator">
+                            <p>Author: </p>
+                            <a href="personal-page.html" class="author-link">
+                                Hamilton
+                            </a>
+                        </div>
+                        <div class="blog-item_posts">
+                            <p>Posts: </p>
+                            <p>538</p>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
             
         </main>   
@@ -45,14 +93,15 @@
     
         <div class="filters_sort-by">
             <div class="">Sort by:</div>    
-            <div class="custom-select">
-                <select>
-                  <option value="0"></option>
-                  <option value="1">Relevance</option>
-                  <option value="2">Rating</option> 
-                  <option value="3">Newest first</option>                    
-                </select>
-            </div>
+            <div class="filters_select-container">
+                <div class="filters_select-inner-container">
+                  <select>
+                    <option value="">Relevance</option>
+                    <option value="">Rating</option>
+                    <option value="">Newest first</option>               
+                  </select>    
+                </div>
+              </div>
         </div>
        
     
@@ -63,9 +112,21 @@
               </label>
         </div>
     
-        <form action="/" class="filters_tags" method="POST">
-        <p>Add tags: </p>
-        </form>
+       
+        <div class="filters_tags">
+            <p>Add tags: </p>
+           <div class="tags-container">
+               <div class="tag-input">
+                 <input  />  
+               </div>    
+               <br />
+               <br />
+               Press enter after you typed.
+             </div>    </div>
+    
+    
+       
+        
     </aside> 
     
 </body>
