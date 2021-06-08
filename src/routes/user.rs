@@ -81,3 +81,6 @@ pub fn get_user(username: String, users: State<Users>) -> JsonValue {
         json!({"status": "error", "reason": "user does not exists"})
     }
 }
+
+// #[get("/amigood?")]
+// fn tokencheck(user: UserAccess)

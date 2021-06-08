@@ -22,18 +22,33 @@ impl Articles {
         self.articles.read().ok()?.get(id).cloned()
     }
 
-    pub fn vote(&self, id: usize, vote: i8) -> Result<(), String> {
+    pub fn vote(&self, id: usize, delta: (i8, i8)) -> Result<(i32, i32), String> {
         if let Ok(mut articles) = self.articles.write() {
             if let Some(article) = articles.get_mut(id) {
-                article.morevotes += vote.max(0) as u32;
-                article.lessvotes += -vote.min(0) as u32;
+                //let oldmore = article.morevotes;
+                //let oldless = article.lessvotes;
+                // *mv += vote.max(0) as u32;
+                // *lv += (-vote.min(0)) as u32;
+                let (mv, lv) = delta;
+                if mv >= 0 {
+                    article.morevotes += mv as u32;
+                } else {
+                    article.morevotes -= (-mv) as u32;
+                }
+                if lv >= 0 {
+                    article.lessvotes += lv as u32;
+                } else {
+                    article.lessvotes -= (-lv) as u32;
+                }
+
+                //println!("mv: {}, lv: {}", ol, *lv);
+                return Ok((article.morevotes as i32, article.lessvotes as i32));
             } else {
                 return Err("article not found".to_string());
             }
         } else {
             return Err("articles blocked".to_string());
         }
-        Ok(())
     }
     pub fn comment(&self, id: usize, comment: Comment, comments: &Comments) -> Result<(), String> {
         if let Ok(mut articles) = self.articles.write() {
@@ -66,7 +81,7 @@ pub struct Article {
     pub content: String,
 
     //datetime (todo?)
-    image: String,
+    pub image: String,
     image_title: String,
     image_description: String,
 
@@ -103,7 +118,7 @@ pub struct PostableArticle {
     pub hub: String,
     pub content: String,
 
-    image: String,
+    pub image: String,
     image_title: String,
     image_description: String,
 }

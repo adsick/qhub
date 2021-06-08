@@ -40,8 +40,8 @@ impl Users {
                     Some(u) => {
                         if u.password == password {
                             return Ok(());
-                        } else{
-                            return Err("wrong password".to_string())
+                        } else {
+                            return Err("wrong password".to_string());
                         }
                     }
                     None => return Err(format!("user '{}' not found", username)),
@@ -61,11 +61,22 @@ impl Users {
             .cloned()
     }
 
-    pub fn postvote(&self, username: &str, id: usize, vote: i8) -> Result<(), String> {
+    //now looks fixed
+    pub fn postvote(&self, username: &str, id: usize, vote: i8) -> Result<(i8, i8), String> {
         if let Some(user) = self.users.write().unwrap().get_mut(username) {
-            let entry = user.postvotes.entry(id);
-            entry.or_insert(vote);
-            return Ok(());
+            let mv = vote.max(0);
+            let lv = -vote.min(0);
+
+            if let Some(old) = user.postvotes.get_mut(&id) {
+                let mv = mv - (*old).max(0); //убираем вклад предыдущего голоса
+                let lv = lv + (*old).min(0);
+                *old = vote;
+
+                return Ok((mv, lv));
+            } else {
+                user.postvotes.insert(id, vote);
+                return Ok((mv, lv));
+            }
         }
         Err("user not found".to_string())
     }

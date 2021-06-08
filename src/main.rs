@@ -27,7 +27,7 @@ fn main() {
         .mount(
             "/global",
             routes![post_article, post_article_access, get_article],
-        ) //сюда постить, номер при постинге указывать не надо. возвращает джисон-результат
+        )
         .mount("/user", routes![get_user, register, login, logout])
         .mount(
             "/comment",
@@ -35,7 +35,7 @@ fn main() {
         )
         .mount("/upload", routes![upload])
         .mount("/", routes![query_hub, postvote])
-        .mount("/", StaticFiles::from("static")) //move it to public or smth in the future
+        .mount("/", StaticFiles::from("static"))
         .manage(Articles::new())
         .manage(Users::new())
         .manage(Comments::new())

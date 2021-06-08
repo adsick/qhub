@@ -1,31 +1,27 @@
-use rocket::http::Cookies;
-
 use super::utils::*;
 
-#[post("/postvote/<id>", format = "json", data = "<vote>")]
+//testing needed
+#[post("/postvote/<id>/<vote>")]
 pub fn postvote(
     id: usize,
-    vote: Json<i8>,
-    cookies: Cookies,
+    vote: i8,
+    user: UserAccess,
     articles: State<Articles>,
     users: State<Users>,
-    sessions: State<Sessions>,
 ) -> JsonValue {
-    let token = match cookies.get("token") {
-        Some(token) => token.to_string(),
-        None => return json!({"status": "error", "reason": "session token not found"}),
-    };
-    let username = match sessions.get(&token) {
-        Some(username) => username,
-        None => return json!({"status": "err", "reason": "invalid token"}),
-    };
-    // let username = username.to_owned();
-
+    let username = user.username;
+    if articles.get(id).is_none() {
+        return json!({"status": "error", "reason": "not found"});
+    }
+    println!("{} wants to {:+} the article id: {}", username, vote, id);
+    let delta = users.postvote(&username, id, vote).unwrap();
+    println!("delta: {:?}", delta);
     //the next thing is not good
-    match articles.vote(id, vote.0) {
-        Ok(()) => {
-            users.postvote(&username, id, vote.0);
-            json!({"status": "success"})
+    match articles.vote(id, delta) {
+        Ok((mv, lv)) => {
+            //users.postvote(&username, id, delta).ok();
+            println!("mv: {:+}, lv: {:+}", mv, lv);
+            json!({"status": "success", "morevotes": mv, "lessvotes": lv})
         }
         Err(e) => json!({"status": "error: ".to_string() + &e}),
     }
