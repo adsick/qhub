@@ -140,14 +140,12 @@ impl<'a, 'r> rocket::request::FromRequest<'a, 'r> for UserAccess {
     fn from_request(
         request: &'a rocket::Request<'r>,
     ) -> rocket::request::Outcome<Self, Self::Error> {
-        // let users = request.guard::<State<Users>>();
-        // let sessions = request.guard::<State<Sessions>>();
         let cookies = request.cookies();
         let token = cookies.get("token").map(|c| c.value());
         match token {
             Some(token) => {
                 let sessions = request.guard::<State<Sessions>>().unwrap();
-
+                
                 match sessions.get(&token) {
                     Some(username) => return Outcome::Success(UserAccess { username }),
                     None => {

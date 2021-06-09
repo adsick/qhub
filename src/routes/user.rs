@@ -82,5 +82,22 @@ pub fn get_user(username: String, users: State<Users>) -> JsonValue {
     }
 }
 
-// #[get("/amigood?")]
-// fn tokencheck(user: UserAccess)
+#[get("/tokencheck")]
+pub fn tokencheck(user: Option<UserAccess>)->JsonValue{
+match user{
+    Some(u) => json!({"valid": 1}),
+    None => json!({"valid": 0}),
+}
+}
+
+#[get("/tokencheck")]
+pub fn tokencheck2(cookies: Cookies, sessions: State<Sessions>)->JsonValue{
+    println!("{:?}", cookies);
+    let token = cookies.get("token").map_or("", |c|c.value());
+    println!("token: {}", token);
+    if sessions.read().contains_key(token){
+        json!({"valid": 1})
+    } else {
+        json!({"valid": 0})
+    }
+}

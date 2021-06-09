@@ -28,7 +28,7 @@ fn main() {
             "/global",
             routes![post_article, post_article_access, get_article],
         )
-        .mount("/user", routes![get_user, register, login, logout])
+        .mount("/user", routes![get_user, register, login, logout, tokencheck])
         .mount(
             "/comment",
             routes![get_comment, get_level, add_comment_access],

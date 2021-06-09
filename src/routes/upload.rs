@@ -3,7 +3,7 @@ use super::utils::*;
 use rocket::{response::NamedFile, Data};
 use std::{io, path::Path};
 #[post("/<f>", data = "<data>")]
-pub fn upload(f: String, data: Data) -> JsonValue {
+pub fn upload(f: String, user: UserAccess, data: Data) -> JsonValue {
     match data.stream_to_file("static/upload/".to_string() + &f) {
         Ok(a) => {
             println!("file '{}' was succesfully posted, len = {}", f, a);
