@@ -9,3 +9,5 @@ write_timeout = 5
 log = "normal"
 #secret_key = []
 limits = { forms = 32768 }
+[production]
+log = "normal"
